@@ -76,6 +76,15 @@ export default {
           800: '#92400E',
           900: '#78350F',
         },
+        // Text colors for better readability
+        text: {
+          primary: '#FEFEFE',      // Warm white for headings
+          secondary: '#E5E7EB',    // Light gray for body text
+          tertiary: '#9CA3AF',     // Muted white for secondary text
+          accent: '#84CC16',       // Sage green for accents
+          dark: '#1F2937',         // Dark charcoal for cream cards
+          'dark-secondary': '#6B7280', // Dark gray for secondary text on cream
+        },
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', '"Poppins"', 'ui-sans-serif', 'system-ui'],
@@ -93,6 +102,7 @@ export default {
         'premium-hover': '0 16px 48px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.15)',
         'button-glow': '0 4px 16px rgba(132, 204, 22, 0.4), 0 2px 8px rgba(0,0,0,0.1)',
         'sidebar': '0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.05)',
+        'premium-glow': '0 0 24px rgba(132, 204, 22, 0.4), 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)',
       },
       animation: {
         'bounce-slow': 'bounce 2s infinite',

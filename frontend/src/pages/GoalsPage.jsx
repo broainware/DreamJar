@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import api from '../utils/api'
 import { formatRupiah, calcProgress, daysLeft, getCategoryEmoji, getStatusColor } from '../utils/helpers'
 import toast from 'react-hot-toast'
+import Modal, { ModalButton } from '../components/ui/Modal'
 
 const TABS = ['all', 'active', 'completed', 'missed']
 
@@ -10,6 +11,8 @@ export default function GoalsPage() {
   const [goals, setGoals] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('all')
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [goalToDelete, setGoalToDelete] = useState(null)
 
   const fetchGoals = async (status) => {
     setLoading(true)
@@ -27,11 +30,18 @@ export default function GoalsPage() {
   useEffect(() => { fetchGoals(activeTab) }, [activeTab])
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this goal?')) return
+    setGoalToDelete(id)
+    setShowDeleteModal(true)
+  }
+
+  const confirmDelete = async () => {
+    if (!goalToDelete) return
     try {
-      await api.delete(`/goals/${id}`)
+      await api.delete(`/goals/${goalToDelete}`)
       toast.success('Goal deleted')
       fetchGoals(activeTab)
+      setShowDeleteModal(false)
+      setGoalToDelete(null)
     } catch {
       toast.error('Failed to delete')
     }
@@ -41,8 +51,8 @@ export default function GoalsPage() {
     <div className="page-wrapper animate-fade-in">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-display text-3xl text-gray-800"><svg className="w-8 h-8 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Goals Saya</h1>
-          <p className="text-gray-500 text-sm mt-1">Lacak dan kelola impian tabungan Anda</p>
+          <h1 className="font-display text-3xl text-text-primary"><svg className="w-8 h-8 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Goals Saya</h1>
+          <p className="text-text-secondary text-sm mt-1">Lacak dan kelola impian tabungan Anda</p>
         </div>
         <Link to="/goals/new" className="btn-primary"><svg className="w-4 h-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg> New Goal</Link>
       </div>
@@ -108,7 +118,7 @@ export default function GoalsPage() {
 
                 {/* Progress */}
                 <div className="mb-3">
-                  <div className="flex justify-between text-xs font-bold text-gray-500 mb-1.5">
+                  <div className="flex justify-between text-xs font-bold text-text-dark-secondary mb-1.5">
                     <span>{formatRupiah(goal.saved_amount)}</span>
                     <span>{formatRupiah(goal.target_amount)}</span>
                   </div>
@@ -142,6 +152,34 @@ export default function GoalsPage() {
           })}
         </div>
       )}
+
+      {/* Delete Modal */}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false)
+          setGoalToDelete(null)
+        }}
+        title="Hapus Goal?"
+        description="Data goal yang dihapus tidak dapat dikembalikan."
+        type="delete"
+      >
+        <ModalButton
+          variant="cancel"
+          onClick={() => {
+            setShowDeleteModal(false)
+            setGoalToDelete(null)
+          }}
+        >
+          Batal
+        </ModalButton>
+        <ModalButton
+          variant="delete"
+          onClick={confirmDelete}
+        >
+          Hapus
+        </ModalButton>
+      </Modal>
     </div>
   )
 }
