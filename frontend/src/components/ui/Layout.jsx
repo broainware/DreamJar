@@ -1,6 +1,7 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useState } from 'react'
+import Modal from './Modal'
 
 const navItems = [
   { to: '/dashboard', icon: () => <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>, label: 'Dashboard' },
@@ -16,36 +17,38 @@ export default function Layout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   const handleLogout = () => {
     logout()
     navigate('/login')
+    setShowLogoutModal(false)
   }
 
   return (
-    <div className="flex min-h-screen bg-sky-50">
+    <div className="flex min-h-screen relative overflow-hidden bg-decoration">
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-white shadow-card fixed h-full z-20 border-r border-blue-50">
+      <aside className="hidden md:flex flex-col w-64 bg-charcoal-800/90 backdrop-blur-xl shadow-sidebar fixed h-full z-20 border-r border-cream-200/20 rounded-r-5xl">
         {/* Logo */}
-        <div className="px-6 py-5 border-b border-blue-50">
+        <div className="px-6 py-5 border-b border-cream-200/20">
           <div className="flex items-center gap-3">
-            <span className="text-3xl"><svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg></span>
+            <span className="text-3xl"><svg className="w-8 h-8 text-sage-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg></span>
             <div>
-              <h1 className="font-display text-xl text-primary-600">DreamJar</h1>
-              <p className="text-xs text-gray-400 font-medium">Save. Dream. Grow.</p>
+              <h1 className="font-display text-xl text-cream-100">DreamJar</h1>
+              <p className="text-xs text-charcoal-300 font-medium">Save. Dream. Grow.</p>
             </div>
           </div>
         </div>
 
         {/* User mini */}
-        <div className="px-5 py-4 border-b border-blue-50">
-          <div className="flex items-center gap-3 bg-sky-50 rounded-2xl p-3">
-            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-xl">
-              {user?.avatar_url ? <img src={user.avatar_url} className="w-full h-full rounded-full object-cover" alt="" /> : <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
+        <div className="px-5 py-4 border-b border-cream-200/20">
+          <div className="flex items-center gap-3 bg-cream-50/10 backdrop-blur-sm rounded-4xl p-3 border border-cream-200/20">
+            <div className="w-10 h-10 rounded-full bg-sage-500/20 flex items-center justify-center text-xl border border-sage-400/30">
+              {user?.avatar_url ? <img src={user.avatar_url} className="w-full h-full rounded-full object-cover" alt="" /> : <svg className="w-6 h-6 text-sage-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
             </div>
             <div className="overflow-hidden">
-              <p className="font-bold text-gray-800 text-sm truncate">{user?.name}</p>
-              <p className="text-xs text-primary-500 font-semibold"><svg className="w-4 h-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" /></svg> {user?.coins || 0} coins</p>
+              <p className="font-bold text-cream-100 text-sm truncate">{user?.name}</p>
+              <p className="text-xs text-sage-400 font-semibold"><svg className="w-4 h-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" /></svg> {user?.coins || 0} coins</p>
             </div>
           </div>
         </div>
@@ -57,10 +60,10 @@ export default function Layout() {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all duration-200 ${
+                `flex items-center gap-3 px-4 py-3 rounded-4xl font-bold text-sm transition-all duration-300 ${
                   isActive
-                    ? 'bg-primary-500 text-white shadow-md'
-                    : 'text-gray-500 hover:bg-primary-50 hover:text-primary-600'
+                    ? 'bg-sage-500/20 text-sage-300 shadow-glow border border-sage-400/30'
+                    : 'text-charcoal-300 hover:bg-cream-50/10 hover:text-cream-100 hover:shadow-soft'
                 }`
               }
             >
@@ -71,10 +74,10 @@ export default function Layout() {
         </nav>
 
         {/* Logout */}
-        <div className="p-4 border-t border-blue-50">
+        <div className="p-4 border-t border-cream-200/20">
           <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-red-400 hover:bg-red-50 hover:text-red-600 font-bold text-sm transition-all duration-200"
+            onClick={() => setShowLogoutModal(true)}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-4xl text-red-300 hover:bg-red-500/10 hover:text-red-200 font-bold text-sm transition-all duration-300"
           >
             <span className="text-lg"><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></span>
             <span>Logout</span>
@@ -83,37 +86,37 @@ export default function Layout() {
       </aside>
 
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-blue-100 shadow-sm">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-charcoal-800/90 backdrop-blur-xl border-b border-cream-200/20 shadow-sidebar rounded-b-5xl">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <span className="text-2xl"><svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg></span>
-            <h1 className="font-display text-lg text-primary-600">DreamJar</h1>
+            <span className="text-2xl"><svg className="w-6 h-6 text-sage-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg></span>
+            <h1 className="font-display text-lg text-cream-100">DreamJar</h1>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-bold text-primary-500"><svg className="w-4 h-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" /></svg> {user?.coins || 0}</span>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 rounded-xl bg-primary-50 text-primary-600">
+            <span className="text-sm font-bold text-sage-400"><svg className="w-4 h-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" /></svg> {user?.coins || 0}</span>
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 rounded-3xl bg-cream-50/10 text-cream-100 hover:bg-cream-50/20 transition-colors">
               {mobileOpen ? <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg> : <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>}
             </button>
           </div>
         </div>
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="bg-white border-t border-blue-50 px-4 py-3 space-y-1 animate-slide-up">
+          <div className="bg-charcoal-800/95 backdrop-blur-xl border-t border-cream-200/20 px-4 py-3 space-y-1 animate-slide-up rounded-b-5xl">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-sm transition-all ${
-                    isActive ? 'bg-primary-500 text-white' : 'text-gray-500 hover:bg-primary-50'
+                  `flex items-center gap-3 px-4 py-3 rounded-4xl font-bold text-sm transition-all duration-300 ${
+                    isActive ? 'bg-sage-500/20 text-sage-300 shadow-glow' : 'text-charcoal-300 hover:bg-cream-50/10 hover:text-cream-100'
                   }`
                 }
               >
                 <span>{item.icon()}</span><span>{item.label}</span>
               </NavLink>
             ))}
-            <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-red-400 font-bold text-sm">
+            <button onClick={() => setShowLogoutModal(true)} className="w-full flex items-center gap-3 px-4 py-3 rounded-4xl text-red-300 font-bold text-sm">
               <span><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></span><span>Logout</span>
             </button>
           </div>
@@ -124,6 +127,27 @@ export default function Layout() {
       <main className="flex-1 md:ml-64 pt-16 md:pt-0 min-h-screen">
         <Outlet />
       </main>
+
+      {/* Logout Modal */}
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        title="Logout?"
+        description="Apakah kamu yakin ingin keluar dari akun ini?"
+      >
+        <button
+          onClick={() => setShowLogoutModal(false)}
+          className="btn-secondary px-6"
+        >
+          Batal
+        </button>
+        <button
+          onClick={handleLogout}
+          className="btn-danger px-6"
+        >
+          Logout
+        </button>
+      </Modal>
     </div>
   )
 }
