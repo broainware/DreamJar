@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-sky-50 text-gray-800 font-sans;
+    min-height: 100vh;
+  }
+  * { @apply box-border; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-bold py-2.5 px-5 rounded-2xl transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 flex items-center gap-2 justify-center;
+  }
+  .btn-secondary {
+    @apply bg-white hover:bg-primary-50 text-primary-600 font-bold py-2.5 px-5 rounded-2xl border-2 border-primary-200 transition-all duration-200 active:scale-95 flex items-center gap-2 justify-center;
+  }
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 px-5 rounded-2xl transition-all duration-200 active:scale-95 flex items-center gap-2 justify-center;
+  }
+  .card {
+    @apply bg-white rounded-3xl shadow-card p-5 transition-shadow duration-200;
+  }
+  .card-hover {
+    @apply hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200;
+  }
+  .input-field {
+    @apply w-full border-2 border-gray-200 focus:border-primary-400 rounded-2xl px-4 py-3 text-gray-800 outline-none transition-colors duration-200 bg-white placeholder-gray-400 font-sans;
+  }
+  .label {
+    @apply block text-sm font-bold text-gray-600 mb-1.5;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full;
+  }
+  .progress-bar {
+    @apply h-3 rounded-full overflow-hidden bg-gray-100;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-700 ease-out;
+  }
+  .stat-card {
+    @apply bg-white rounded-2xl p-4 shadow-card flex items-center gap-3;
+  }
+  .section-title {
+    @apply text-xl font-display text-gray-800 mb-4;
+  }
+  .page-wrapper {
+    @apply max-w-5xl mx-auto px-4 py-6;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F0F9FF; }
+::-webkit-scrollbar-thumb { background: #93C5FD; border-radius: 6px; }
+
+/* Pet animations */
+.pet-idle { animation: float 3s ease-in-out infinite; }
+.pet-happy { animation: wiggle 0.5s ease-in-out 3; }
+.pet-eating { animation: bounce 0.4s ease-in-out 3; }

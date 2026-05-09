@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "DreamJar",
+    "slug": "dreamjar",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#EFF6FF"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.dreamjar.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Use biometric authentication to log in"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#EFF6FF"
+      },
+      "package": "com.dreamjar.app",
+      "permissions": ["USE_BIOMETRIC", "USE_FINGERPRINT", "RECEIVE_BOOT_COMPLETED", "VIBRATE"]
+    },
+    "plugins": [
+      "expo-router",
+      ["expo-notifications", {
+        "icon": "./assets/notification-icon.png",
+        "color": "#3B82F6"
+      }]
+    ],
+    "scheme": "dreamjar"
+  }
+}
